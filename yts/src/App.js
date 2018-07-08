@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import API from './api/api';
+import endpoints from './api/endpoints';
+import RouterConfig from './router';
+
+const YtsAPIContext = React.createContext();
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.ytsAPI = new API({url:"https://yts.am/api/v2"})
+    this.ytsAPI.createEntities(endpoints);;
+    // this.ytsAPI.endpoints.movie_suggesstion.getAll().then(function(res) {
+    //   console.log(res);
+    // });
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+
+      <YtsAPIContext.Provider value={this.ytsAPI}>
+        <RouterConfig />
+      </YtsAPIContext.Provider>
     );
   }
 }
